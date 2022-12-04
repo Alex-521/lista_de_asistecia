@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Atras" defaultHref="home" color="secondary"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>
+      {{m.materia_nombre}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h2>Lista de asistencia</h2>
+  <table>
+    <tr>
+      <th>Nombre</th>
+      <th>marzo</th>
+    </tr>
+    
+    <tr>
+      <td>juan</td>
+      <td>juan2</td>
+    </tr>
+  </table>
+
+  <ion-list *ngFor="let m of ma">
+    <ion-item-sliding>
+
+      <ion-item color="primary">
+        <ion-avatar slot="start">
+          <div class="avatar">
+            <ion-icon name="book-outline"></ion-icon>
+          </div>
+        </ion-avatar>
+        <ion-label>
+          <h2 class="title text-light" >{{m.materia_nombre}}</h2>
+
+        </ion-label>
+      </ion-item>
+      
+    </ion-item-sliding>
+  </ion-list>
+
+
+</ion-content>

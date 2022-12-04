@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()" color="danger">
+        Cerrar
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>
+      {{dataG.nombre == ''? dataG.nombre:'. _.'}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h1>{{isUpdate == false ? 'Creacion':'Actualizacion'}} de {{vista=='grupos'? 'grupos':'fechas'}}</h1>
+
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+
+    <div *ngIf="vista == 'grupos'">
+      <h5>{{isUpdate == false? 'Datos para nuevo grupo': 'Nombre unico de Grupo'}}</h5>
+      <h4>{{dataG.nombre}}</h4>
+      <ion-item>
+        <ion-label position="floating">Nombre del grupo: </ion-label>
+        <ion-input [(ngModel)]="dataGOP.nombre" name="nombre"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Año: </ion-label>
+        <ion-input [(ngModel)]="dataGOP.ano" name="ano"  maxlength="4" minlength="4" min="1990" max="2023"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Cuatrimentre del año: </ion-label>
+        <ion-input [(ngModel)]="dataGOP.cuatri" name="cuatri" min="1" max="4"></ion-input>
+      </ion-item>
+    </div>
+
+
+    <div *ngIf="vista == 'materias'">
+      <ion-item>
+        <ion-label position="floating">Grupo</ion-label>
+        <ion-select [(ngModel)]="dataC.grupo" name="grupo" multiple="false" placeholder="Selecciona grupo">
+          <ion-select-option *ngFor="let o of opc" id="opcValue" value={{o.id_g}}>{{o.nombre.substring(7,o.nombre.length)}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Fecha: </ion-label>
+        <ion-input [(ngModel)]="dataC.fecha" name="fecha"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Tema programado: </ion-label>
+        <ion-input [(ngModel)]="dataC.tema_programado" name="tema_programado"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Avances: </ion-label>
+        <ion-input [(ngModel)]="dataC.avances" name="avances"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Comentarios: </ion-label>
+        <ion-input [(ngModel)]="dataC.comentarios" name="comentarios"></ion-input>
+      </ion-item>
+    </div>
+
+    <ion-button fill="outline" color="primary" expand="block" type="submit" class="ion-margin-top">
+      {{isUpdate ? 'Actualizar' : 'Añadir'}}</ion-button>
+  </form>
+
+</ion-content>
