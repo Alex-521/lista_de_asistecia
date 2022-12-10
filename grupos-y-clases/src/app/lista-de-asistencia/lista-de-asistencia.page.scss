@@ -1,0 +1,22 @@
+table{
+    border: 4px;
+    font-size: medium;
+}
+table th, td{
+    padding: 0px;
+}
+.celda{
+    text-align: center;
+    width: 50px;
+}
+.indice{
+//     font-weight: bold;
+    width: 40%;
+}
+.Borde{    --padding-start: 8px;}
+ion-item{
+    --padding-start: 8px;
+}
+.celdas{
+    width: 60%;
+}

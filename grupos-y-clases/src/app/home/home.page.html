@@ -1,12 +1,12 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="light">
+<ion-header>
+  <ion-toolbar color="primary">
     <ion-title>
       Lista de {{vista=='materias'? 'materias':'grupos'}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content id="content" [fullscreen]="true" color="tertiary">
+<ion-content id="content" [fullscreen]="true">
 
   <div *ngIf="vista == 'materias'">
     <!-- <ion-list id="listG" *ngFor="let gmof GetG">
@@ -36,14 +36,14 @@
     <ion-list *ngFor="let m of mat">
       <ion-item-sliding>
 
-        <ion-item color="primary" [routerLink]="['/lista-de-asistencia',m.id_materia]">
+        <ion-item color="secondary" [routerLink]="['/lista-de-asistencia',m.id_materia]">
           <ion-avatar slot="start">
             <div class="avatar">
               <ion-icon name="book-outline"></ion-icon>
             </div>
           </ion-avatar>
           <ion-label>
-            <h2 class="title text-light" >{{m.materia_nombre}}</h2>
+            <h2 color="secondary" >{{m.grupo}} - {{m.materia_nombre}}</h2>
 
           </ion-label>
         </ion-item>
@@ -96,15 +96,13 @@
   </ion-fab>
 </ion-content>
 
-<ion-toolbar color="light">
-
-  <ion-buttons class="text-light">
+<ion-toolbar color="primary">
+  <ion-buttons>
     <ion-button slot="end" (click)="VMaterias()">
       Ver materias
     </ion-button>
     <ion-button slot="start" (click)="VGrupos()">
       Ver grupos
     </ion-button>
-
   </ion-buttons>
 </ion-toolbar>

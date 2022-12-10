@@ -1,74 +1,150 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="secondary">
     <ion-buttons slot="end">
-      <ion-button (click)="closeModal()" color="danger">
-        Cerrar
-      </ion-button>
+      <ion-button (click)="closeModal()" color="light">Cerrar</ion-button>
     </ion-buttons>
 
-    <ion-title>
-      {{dataG.nombre == ''? dataG.nombre:'. _.'}}
-    </ion-title>
+    <ion-title>Lista de asistencia</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <h1>{{isUpdate == false ? 'Creacion':'Actualizacion'}} de {{vista=='grupos'? 'grupos':'fechas'}}</h1>
-
+<ion-content color="primary" class="ion-padding">
+  <h1>Datos para una nueva lista de asistencia</h1>
   <form #f="ngForm" (ngSubmit)="onSubmit(f)">
 
-    <div *ngIf="vista == 'grupos'">
-      <h5>{{isUpdate == false? 'Datos para nuevo grupo': 'Nombre unico de Grupo'}}</h5>
-      <h4>{{dataG.nombre}}</h4>
-      <ion-item>
-        <ion-label position="floating">Nombre del grupo: </ion-label>
-        <ion-input [(ngModel)]="dataGOP.nombre" name="nombre"></ion-input>
-      </ion-item>
+    <ion-item color="primary" class="mb-2">
+      <ion-label position="fixed">Materia*</ion-label>
+      <ion-input class="bg-light text-dark rounded Borde" name="mat" [(ngModel)]="mat" required type="text" maxlength="64"></ion-input>
+    </ion-item>
+    <ion-item color="primary" class="mb-2">
+      <ion-label position="fixed">No. alumnos*</ion-label>
+      <ion-input class="bg-light text-dark rounded Borde" name="alu" [(ngModel)]="alu" required type="number" min="0" max="50">
+      </ion-input>
+    </ion-item>
+    <!-- -------------------------------------------------------------- -->
+    <ion-item class="w-50 d-inline-block rounded-start" color="light">
+      <ion-label position="floating">Grupo*</ion-label>
+      <ion-input name="gru" [(ngModel)]="gru" require type="text" placeholder="" maxlength="16"></ion-input>
+    </ion-item>
+    <ion-item class="w-50 d-inline-block rounded-end" color="light">
+      <ion-label position="floating">Grado*</ion-label>
+      <ion-input name="gra" [(ngModel)]="gra" require type="number" placeholder="1" min="1" max="20"></ion-input>
+    </ion-item>
+    <hr>
 
-      <ion-item>
-        <ion-label position="floating">Año: </ion-label>
-        <ion-input [(ngModel)]="dataGOP.ano" name="ano"  maxlength="4" minlength="4" min="1990" max="2023"></ion-input>
-      </ion-item>
+    <!-- -------------------------------------------------------------- -->
+    <h2>Fechas del curso</h2>
+    <ion-item color="light" class="rounded-top">
+      <ion-label position="floating">Fecha de inicio*</ion-label>
+      <ion-input name="fecI" type="date" placeholder="" required [(ngModel)]="curso.ini"
+        (ionChange)="InicioUpdate($event.target.value,0)">
+      </ion-input>
+    </ion-item>
+    <ion-item color="light" class="rounded-bottom">
+      <ion-label position="floating">Fecha final*</ion-label>
+      <ion-input name="fecF" type="date" placeholder="" required [(ngModel)]="curso.fin"
+        (ionChange)="FinUpdate($event.target.value,per.length)">
+      </ion-input>
+    </ion-item>
+    <br>
 
-      <ion-item>
-        <ion-label position="floating">Cuatrimentre del año: </ion-label>
-        <ion-input [(ngModel)]="dataGOP.cuatri" name="cuatri" min="1" max="4"></ion-input>
-      </ion-item>
+    <!-- -------------------------------------------------------------- -->
+    <h2>Sesiones en una semana</h2>
+    <p>Coloque el número de clases por día, si no hay clases en un día de la semana puede dejarlo vicio</p>
+    <ion-item color="light" class="rounded">
+      <table class="table table-bordered border-primary">
+        <tr>
+          <th>Lu</th>
+          <th>Ma</th>
+          <th>Mi</th>
+          <th>Ju</th>
+          <th>Vi</th>
+          <th>Sa</th>
+        </tr>
+        <tr>
+          <td><input type="number" min=0 max="5" placeholder="0" class="w-100 dias" name="lun" [(ngModel)]="lun" value="0"></td>
+          <td><input type="number" min=0 max="5" placeholder="0" class="w-100 dias" name="mar" [(ngModel)]="mar" value="0"></td>
+          <td><input type="number" min=0 max="5" placeholder="0" class="w-100 dias" name="mie" [(ngModel)]="mie" value="0"></td>
+          <td><input type="number" min=0 max="5" placeholder="0" class="w-100 dias" name="jue" [(ngModel)]="jue" value="0"></td>
+          <td><input type="number" min=0 max="5" placeholder="0" class="w-100 dias" name="vie" [(ngModel)]="vie" value="0"></td>
+          <td><input type="number" min=0 max="5" placeholder="0" class="w-100 dias" name="sab" [(ngModel)]="sab" value="0"></td>
+        </tr>
+      </table>
+    </ion-item>
+    <br>
+
+    <!-- -------------------------------------------------------------- -->
+    <h2>Periodos</h2>
+    <ion-item color="light" class="rounded">
+      <ion-label position="fixed">N. periodos: </ion-label>
+      <ion-input class="bg-light text-dark rounded" placeholder="0" type="number" min="1" max="6" id="per" slot="end"
+        (ionChange)="NPeriodoUpdate($event.target.value)" name="NPer" [(ngModel)]="NPer">
+      </ion-input>
+    </ion-item>
+    <br>
+    <div class="bg-light text-dark rounded">
+      <ion-list *ngFor="let p of per; let i = index" class="text-dark rounded">
+        <div class="bg-dark">
+          <h4 class="m-0 text-light">Periodo :{{i+1}}</h4>
+        </div>
+        <ion-item color="light">
+          <ion-item color="light" class="w-50 d-inline-block">
+            <ion-label position="floating">Inicio</ion-label>
+            <ion-input name="fecI{{i}}" type="date" placeholder="" required id="fecI{{i}}" value="" (ionChange)="InicioUpdate($event.target.value,i)"></ion-input>
+          </ion-item>
+          <ion-item color="light" class="w-50 d-inline-block">
+            <ion-label position="floating">Fin</ion-label>
+            <ion-input name="fecF{{i}}" type="date" placeholder="" required id="fecF{{i}}" value="" (ionChange)="FinUpdate($event.target.value,i)"></ion-input>
+          </ion-item>
+        </ion-item>
+
+      </ion-list>
     </div>
+    <br>
 
+    <!-- -------------------------------------------------------------- -->
+    <h2>Vacaciones intermedias</h2>
+    <ion-item color="light" class="rounded-top">
+      <ion-label position="floating">Fecha de inicio</ion-label>
+      <ion-input type="date" placeholder="" name="vacI" [(ngModel)]="vacI"></ion-input>
+    </ion-item>
+    <ion-item color="light" class="rounded-bottom">
+      <ion-label position="floating">Fecha final</ion-label>
+      <ion-input type="date" placeholder="" name="vacF" [(ngModel)]="vacF"></ion-input>
+    </ion-item>
+    <br>
 
-    <div *ngIf="vista == 'materias'">
-      <ion-item>
-        <ion-label position="floating">Grupo</ion-label>
-        <ion-select [(ngModel)]="dataC.grupo" name="grupo" multiple="false" placeholder="Selecciona grupo">
-          <ion-select-option *ngFor="let o of opc" id="opcValue" value={{o.id_g}}>{{o.nombre.substring(7,o.nombre.length)}}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="floating">Fecha: </ion-label>
-        <ion-input [(ngModel)]="dataC.fecha" name="fecha"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="floating">Tema programado: </ion-label>
-        <ion-input [(ngModel)]="dataC.tema_programado" name="tema_programado"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="floating">Avances: </ion-label>
-        <ion-input [(ngModel)]="dataC.avances" name="avances"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="floating">Comentarios: </ion-label>
-        <ion-input [(ngModel)]="dataC.comentarios" name="comentarios"></ion-input>
-      </ion-item>
+    <!-- -------------------------------------------------------------- -->
+    <h2>Días de asueto/inhábiles</h2>
+    <ion-item color="light" class="rounded">
+      <ion-label position="fixed">N. de Días: </ion-label>
+      <ion-input class="bg-light text-dark rounded" placeholder="0" type="number" min="1" max="10" slot="end"
+        (ionChange)="NAsuetoUpdate($event.target.value)" name="NAsu" [(ngModel)]="NAsu">
+      </ion-input>
+    </ion-item>
+    <br>
+    <div class="bg-light text-dark rounded">
+      <ion-list color="light" *ngFor="let a of asu; let i = index" class="text-dark rounded">
+        <ion-item color="light" class="mb-2">
+          <ion-label class="d-inline-block">Día {{i+1}}</ion-label>
+          <ion-input class="bg-light text-dark rounded Borde" name="asuetoNom{{i}}" id="asuNom{{i}}" type="text" placeholder="Nombre"
+            required></ion-input>
+          <ion-input class="bg-light text-dark rounded Borde" name="asuetoFec{{i}}" id="asuFec{{i}}" type="date" required></ion-input>
+        </ion-item>
+      </ion-list>
     </div>
+    <br>
 
-    <ion-button fill="outline" color="primary" expand="block" type="submit" class="ion-margin-top">
-      {{isUpdate ? 'Actualizar' : 'Añadir'}}</ion-button>
+    <div *ngIf="f.status == 'INVALID'"> 
+      <h4>Faltan campos obligatorios</h4>
+    </div>
+    <!-- -------------------------------------------------------------- -->
+    <ion-button color="secondary" expand="block" type="submit" size="large" class="ion-margin-top"
+    [disabled]="f.status == 'INVALID' ? true : false"
+    >
+      Guardar lista
+      <ion-icon class="ml-2" name="save"></ion-icon>
+    </ion-button>
   </form>
 
 </ion-content>

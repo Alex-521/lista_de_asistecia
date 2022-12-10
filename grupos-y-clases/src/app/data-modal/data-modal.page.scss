@@ -1,0 +1,44 @@
+h1,
+h2,h4 {
+    margin: 0px;
+    text-align: center;
+}
+
+hr {
+    color: white;
+}
+
+ion-input {
+    font-size: larger;
+}
+
+.Borde {
+    --padding-start: 8px;
+}
+
+ion-list ion-item {
+    --padding-start: 8px;
+}
+
+ion-select {
+    max-width: 100% !important;
+}
+
+table {
+    text-align: center;
+    margin-right: 8px;
+}
+
+table th,
+td {
+    width: 15%;
+}
+.dias{
+    padding: 4px 4px 4px 20px;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0;
+} 
+input[type=number] { -moz-appearance:textfield; }
