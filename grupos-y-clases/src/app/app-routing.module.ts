@@ -16,26 +16,14 @@ const routes: Routes = [
     loadChildren: () => import('./data-modal/data-modal.module').then( m => m.DataModalPageModule)
   },
   {
-    path: 'del',
-    loadChildren: () => import('./mod/del/del.module').then( m => m.DelPageModule)
-  },
-  {
-    path: 'add',
-    loadChildren: () => import('./mod/add/add.module').then( m => m.AddPageModule)
-  },
-  {
     path: 'lista-de-asistencia/:id',
     loadChildren: () => import('./lista-de-asistencia/lista-de-asistencia.module').then( m => m.ListaDeAsistenciaPageModule)
+  },
+  {
+    path: 'grupo-edit',
+    loadChildren: () => import('./mod/grupo-edit/grupo-edit.module').then( m => m.GrupoEditPageModule)
   }
 ];
-
-
-
-
-
-
-
-
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })

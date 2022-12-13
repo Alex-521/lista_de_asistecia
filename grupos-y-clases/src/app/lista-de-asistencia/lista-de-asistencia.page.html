@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="end">
-      <ion-button color="light">
+      <ion-button color="light" (click)="save()">
         Guardar
       </ion-button>
     </ion-buttons>
@@ -17,50 +17,29 @@
 
 <ion-content>
   <h2>Lista de asistencia: {{m.grupo}}</h2>
-
   <ion-row>
-    <ion-col size="5">
-      <ion-list>
-        <ion-item color="secondary">Nombres</ion-item>
-        <ion-item color="primary" *ngFor="let alu of alumnos">
-          
-
-          <ion-input type="text" placeholder="{{alu.nombres}}"></ion-input>
-
-        </ion-item>
-        
-      </ion-list>
-    </ion-col>
-
-    <ion-col size="0.5"></ion-col>
-
-    <ion-col size="6.5">
+    <ion-col size="12">
       <ion-slides [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }">
-        <ion-slide *ngFor="let cla of clases; let i = index" class="celda d-inline-block">
-          <ion-list>
-            <ion-item color="secondary">{{cla.substring(8,10)}}</ion-item>
-            <ion-item color="primary" *ngFor="let alu of alumnos; let j = index">
-              
-
-              <ion-select value="peperoni" multiple="true" placeholder="{{asistencias[j][i]}}">
-                <ion-select-option value="A">A<p>sistencia</p></ion-select-option>
-                <ion-select-option value="R">Retardo</ion-select-option>
-                <ion-select-option value="J">Justificación</ion-select-option>
-                <ion-select-option value="F">Falta</ion-select-option>
-                <ion-select-option value="-">Ninguna</ion-select-option>
-              </ion-select>
-
-            </ion-item>
-          </ion-list>
+        <ion-slide *ngFor="let p of parciales; let i = index" class="d-inline-block w-50">
+          <ion-button (click)="goToSlide(p.ini)">Ir a Parcial {{i+1}}</ion-button>
         </ion-slide>
       </ion-slides>
     </ion-col>
   </ion-row>
 
-
-  <hr>
   <ion-row>
-    <ion-col size="5">
+    <ion-col size="4.5">
+      <ion-list>
+        <ion-item color="secondary">Nombres
+          <ion-button color="light" slot="end" (click)="addAlu()">
+            <ion-icon name="add-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+        <ion-item color="primary" *ngFor="let alu of alumnos; let i = index">
+          <ion-input type="text" id="alu{{i}}" value="{{alu.nombres}}{{alu.apellidos}}" (dblclick)="DeleteAlu(i)"></ion-input>
+        </ion-item>
+      </ion-list>
+      <hr>
       <ion-list>
         <ion-item color="secondary">Nombres</ion-item>
         <ion-item>Asistencias</ion-item>
@@ -70,32 +49,61 @@
       </ion-list>
     </ion-col>
 
-    <ion-col size="0.5"></ion-col>
+    <ion-col size="2.5">
+      <ion-list>
+        <ion-item color="secondary">%</ion-item>
+        <ion-item color="primary" *ngFor="let por of porcentajes; let i = index">
+          <ion-label>{{por}}%</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-col>
 
-    <ion-col size="6.5">
-      <ion-slides [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }">
+    <ion-col size="5">
+      <ion-slides #mySlider [options]="{ slidesPerView: 'auto', zoom: false, grabCursor: true }">
         <ion-slide *ngFor="let cla of clases; let i = index" class="celda d-inline-block">
           <ion-list>
-            <ion-item color="secondary">{{cla.substring(8,10)}}</ion-item>
+            <ion-item color="secondary" class="cabe">{{meses[cla.substring(5,7)]}} {{cla.substring(8,10)}}</ion-item>
+            <ion-item color="primary" *ngFor="let alu of alumnos; let j = index">
 
-            <ion-item color="primary" *ngFor="let j of [0,1,2,3]">{{contador[j][i]}}
+              <ion-select value="" placeholder="{{asistencias[j][i].substring(0,1)}}"
+                (ionChange)="onChangeAsi($event.target.value,j,i)">
+                <ion-select-option value="A">Asistencia</ion-select-option>
+                <ion-select-option value="R">Retardo</ion-select-option>
+                <ion-select-option value="J">Justificación</ion-select-option>
+                <ion-select-option value="F">Falta</ion-select-option>
+                <ion-select-option value="-">Ninguna</ion-select-option>
+              </ion-select>
+
             </ion-item>
-
           </ion-list>
+
+          <hr>
+          <ion-list>
+            <ion-item color="secondary">{{meses[cla.substring(5,7)]}} {{cla.substring(8,10)}}</ion-item>
+            <ion-item color="primary" *ngFor="let j of [0,1,2,3]">
+              <div>{{contador[j][i]}}</div>
+            </ion-item>
+          </ion-list>
+
+
+
         </ion-slide>
       </ion-slides>
     </ion-col>
   </ion-row>
 
-
-
+  <hr>
+  <h4>Politica</h4>
+  <ion-item color="secondary" class="mb-2">
+    <ion-label><p>Cuantos retardos equivalen <br> a una falta</p></ion-label>
+    <ion-input class="bg-light text-dark rounded Borde w-25 m-2"
+      id="pol" type="number" min="2" max="8"></ion-input>
+  </ion-item>
 </ion-content>
 
 <ion-toolbar color="primary">
-  <ion-buttons slot="start">
-    <ion-button slot="start" (click)="pdf()">Guardar PDF</ion-button>
-  </ion-buttons>
   <ion-buttons slot="end">
-    <ion-button slot="end">Guardar EXCEL</ion-button>
+    <ion-button  (click)="PDF()">Guardar PDF</ion-button>
+    <ion-button  (click)="EXCEL()">Guardar EXCEL</ion-button>
   </ion-buttons>
 </ion-toolbar>

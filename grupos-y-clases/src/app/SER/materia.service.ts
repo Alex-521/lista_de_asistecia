@@ -4,47 +4,38 @@ import { EmailValidator } from '@angular/forms';
 export interface M {
   id_materia: number;
   materia_nombre:string;
-  grupo:number;
+  grupo:string;
+  maestro:string;
+  escuela:string;
+  politica:number;
 
-  maestro:number;
   alumno:any;
-  clasesProgramada:any;
-  
+  clasesProgramada:any;  
   asistencia:any;
-  id_g:number;
-  nombre:string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 
-
-
 export class MateriaService {
   constructor(private http: HttpClient) { }
   private URL ='http://localhost/IDGS704/ARSO/API';
 
-  getAll() {
-    return this.http.get<[M]>(this.URL + '/materias');
+  getAll() {return this.http.get<[M]>(this.URL + '/materias');}
+
+  get(id:number) {return this.http.get<[M]>(this.URL + '/materias/'+id);}
+
+  create(mat:any){return this.http.post(this.URL+'/materias',mat);}
+
+  pdf(mat:FormData){
+    return this.http.post('https://chav.satech.com.mx/api/alumnospdf',mat);
   }
-  get(id:number) {
-    return this.http.get<[M]>(this.URL + '/materias/'+id);
-  }
-  create(mat:any){
-    return this.http.post(this.URL+'/materias',mat);
-  }
-  pdf(mat:any){
-    let params = new HttpParams();
-    
-      // let headers=new HttpHeaders({
-      //   'Access-Control-Allow-Headers': 'Accept,X-Custom-Header',
-      //   'Access-Control-Allow-Origin':'*',
-      //   'Access-Control-Allow-Credentials':'true'
-      // });
-      params = params.append('Content-Type','application/json');
-      params = params.append('Accept','application/json');
-      
-    return this.http.post('https://chav.satech.com.mx/api/generarlista',mat,{params});
+  update(mat: any,id:number){return this.http.put(this.URL+`/materias/${id}`,mat);}
+
+  updateLista(id: any){return this.http.post(this.URL+'/materia-asistencia/',id);}
+
+  delete(id: string){
+    return this.http.delete(this.URL+'/materias/'+id);
   }
 }

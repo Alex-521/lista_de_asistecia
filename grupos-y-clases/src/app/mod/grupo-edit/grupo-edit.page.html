@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()" color="light">Cerrar</ion-button>
+    </ion-buttons>
+    <ion-title>Editar grupo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="primary" [fullscreen]="true" class="ion-padding">
+  <h2>{{m.materia_nombre}}</h2>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <ion-item class="rounded-top">
+      <ion-label position="floating" required>Nombre de la materia</ion-label>
+      <ion-input [(ngModel)]="data.materia_nombre" name="materia_nombre"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating" required>Nombre del grupo</ion-label>
+      <ion-input [(ngModel)]="data.grupo" name="grupo"></ion-input>
+    </ion-item>
+    <ion-item class="rounded-bottom" required>
+      <ion-label position="floating">Nombre del grupo</ion-label>
+      <ion-input [(ngModel)]="data.escuela" name="escuela"></ion-input>
+    </ion-item>
+
+
+  
+
+
+    <ion-button
+      color="secondary"
+      expand="block" type="submit"
+      class="ion-margin-top" size="large"
+      block type="submit" [disabled]="f.invalid">
+      Guardar<ion-icon style="margin-left: 16px;" name="save"></ion-icon>
+    </ion-button>
+  </form>
+
+</ion-content>
